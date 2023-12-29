@@ -1,0 +1,46 @@
+---
+title: "Plots"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+#git test for repo
+DOdata <- read.csv("https://raw.githubusercontent.com/vpourfaraj/flexdashTrial/main/Cowichan%20DO%202023%20for%20R.csv")
+
+DOdata$dt = as.POSIXct(DOdata$dt, format = "%m/%d/%Y %H:%M")
+DOdata$time = as.POSIXct(DOdata$time, format = "%H:%M")
+DOdata$site<-factor(DOdata$site,levels=c("Saysells","70.2","HSB","Fence"))
+DOmain<-subset(DOdata,streamloc=="main")
+DOlow<-subset(DOdata,streamloc=="low") 
+```
+
+Column {data-width=750}
+-----------------------------------------------------------------------
+
+### Temperature vatiation in Cowichan River - Test
+
+
+```{r}
+TempPlot<- ggplot(data=DOmain,aes(x=dt, y=temp,
+                     colour=site,group=site))+
+  geom_line(aes(size=site))+
+  scale_x_datetime(date_labels= "%e-%b", date_breaks="10 days")+
+  xlab("Date")+
+  ylab("Temperature (C)")+
+  scale_size_manual(values=c("Saysells"=0.5,"70.2"=0.5,"HSB"=0.5,"Fence"=0.5))+
+  theme_classic()
+
+ggplotly(TempPlot)
+
+```
+
