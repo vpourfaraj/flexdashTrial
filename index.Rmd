@@ -11,12 +11,9 @@ library(flexdashboard)
 library(ggplot2)
 library(tidyverse)
 library(plotly)
-
-# test github
 ```
 
 ```{r}
-#git test for repo
 DOdata <- read.csv("https://raw.githubusercontent.com/vpourfaraj/flexdashTrial/main/Cowichan%20DO%202023%20for%20R.csv?token=GHSAT0AAAAAACL6E3QWQDR4NQJUZBN5TTCWZMPF5ZQ")
 
 DOdata$dt = as.POSIXct(DOdata$dt, format = "%m/%d/%Y %H:%M")
