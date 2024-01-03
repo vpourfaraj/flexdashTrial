@@ -60,7 +60,7 @@ ggplotly(DOPlot)
 pH {data-orientation=rows}
 =====================================
 
-Row {data-height=750}
+Row {data-height=650}
 -------------------------------------
 
 ### pH time series
@@ -83,7 +83,7 @@ ggplotly(pHPlot)
 
 ```
 
-Row {data-height=250}
+Row {data-height=350}
 -------------------------------
 
 ### pH boxplots
@@ -91,7 +91,7 @@ Row {data-height=250}
 boxPlotpH<- ggplot(data=data,aes(x=site, y=pH,
                      colour=site,group=site))+
   geom_boxplot(alpha=0.3)+
-  theme_classic()
+  theme(legend.position="none")
 ggplotly(boxPlotpH)
 ```
 
