@@ -60,18 +60,18 @@ ggplotly(DOPlot)
 pH {data-orientation=rows}
 =====================================
 
-Row {data-height=650}
+Row {data-height=600}
 -------------------------------------
 
 ### pH time series
 
 ```{r}
-data<- read.csv("https://raw.githubusercontent.com/vpourfaraj/flexdashTrial/main/Cowichan%20River%20pH_All%20Sites_2023_R.csv")
-data$dt = as.POSIXct(data$dt, format = "%m/%d/%Y %H:%M")
-data$time = as.POSIXct(data$time, format = "%H:%M")
-data$site<-factor(data$site,levels=c("Saysells","70.2","HSB","Fence"))
+pHdata<- read.csv("https://raw.githubusercontent.com/vpourfaraj/flexdashTrial/main/Cowichan%20River%20pH_All%20Sites_2023_R.csv")
+pHdata$dt = as.POSIXct(pHdata$dt, format = "%m/%d/%Y %H:%M")
+pHdata$time = as.POSIXct(pHdata$time, format = "%H:%M")
+pHdata$site<-factor(pHdata$site,levels=c("Saysells","70.2","HSB","Fence"))
 
-pHPlot<- ggplot(data=data,aes(x=dt, y=pH,
+pHPlot<- ggplot(data=pHdata,aes(x=dt, y=pH,
                      colour=site,group=site))+
   geom_line(aes(size=site))+
   scale_x_datetime(date_labels= "%e-%b", date_breaks="5 days")+
@@ -83,15 +83,15 @@ ggplotly(pHPlot)
 
 ```
 
-Row {data-height=350}
+Row {data-height=400}
 -------------------------------
 
 ### pH boxplots
 ```{r}
-boxPlotpH<- ggplot(data=data,aes(x=site, y=pH,
+boxPlotpH<- ggplot(data=pHdata,aes(x=site, y=pH,
                      colour=site,group=site))+
   geom_boxplot(alpha=0.3)+
-  theme(legend.position="none")
+  theme(legend.position="none", panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"))
 ggplotly(boxPlotpH)
 ```
 
