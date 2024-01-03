@@ -1,8 +1,8 @@
 ---
-title: "Plots"
+title: "Cowichan River Ecological indicators Dashboard"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
+    orientation: rows
     vertical_layout: fill
 ---
 
@@ -23,23 +23,75 @@ DOmain<-subset(DOdata,streamloc=="main")
 DOlow<-subset(DOdata,streamloc=="low") 
 ```
 
-Column {data-width=750}
------------------------------------------------------------------------
-
-### Temperature vatiation in Cowichan River - Test
-
+Temperature
+=====================================  
+    
 
 ```{r}
 TempPlot<- ggplot(data=DOmain,aes(x=dt, y=temp,
                      colour=site,group=site))+
   geom_line(aes(size=site))+
-  scale_x_datetime(date_labels= "%e-%b", date_breaks="10 days")+
+  scale_x_datetime(date_labels= "%e-%b", date_breaks="5 days")+
   xlab("Date")+
   ylab("Temperature (C)")+
   scale_size_manual(values=c("Saysells"=0.5,"70.2"=0.5,"HSB"=0.5,"Fence"=0.5))+
   theme_classic()
 
 ggplotly(TempPlot)
+```
 
+Dissolved Oxygen 
+=====================================     
+   
+
+```{r}
+DOPlot<- ggplot(data=DOmain,aes(x=dt, y=DO.mgl,
+                       colour=site,group=site))+
+    geom_line(aes(size=site))+
+    scale_x_datetime(date_labels= "%e-%b", date_breaks="5 days")+
+    xlab("Date")+
+    ylab("Dissolved Oxygen (mg/L)")+
+    scale_size_manual(values=c("Saysells"=0.5,"70.2"=0.5,"HSB"=0.5,"Fence"=0.5))+
+    theme_classic()
+
+ggplotly(DOPlot)
+```
+
+pH {data-orientation=rows}
+=====================================
+
+Row {data-height=750}
+-------------------------------------
+
+### pH time series
+
+```{r}
+data<- read.csv("https://raw.githubusercontent.com/vpourfaraj/flexdashTrial/main/Cowichan%20River%20pH_All%20Sites_2023_R.csv")
+data$dt = as.POSIXct(data$dt, format = "%m/%d/%Y %H:%M")
+data$time = as.POSIXct(data$time, format = "%H:%M")
+data$site<-factor(data$site,levels=c("Saysells","70.2","HSB","Fence"))
+
+pHPlot<- ggplot(data=data,aes(x=dt, y=pH,
+                     colour=site,group=site))+
+  geom_line(aes(size=site))+
+  scale_x_datetime(date_labels= "%e-%b", date_breaks="5 days")+
+  xlab("Date")+
+  ylab("pH")+
+  scale_size_manual(values=c("Saysells"=0.5,"70.2"=0.5,"HSB"=0.5,"Fence"=0.5))+
+  theme_classic()
+ggplotly(pHPlot)
+
+```
+
+Row {data-height=250}
+-------------------------------
+
+### pH boxplots
+```{r}
+boxPlotpH<- ggplot(data=data,aes(x=site, y=pH,
+                     colour=site,group=site))+
+  geom_boxplot(alpha=0.3)+
+  theme_classic()
+ggplotly(boxPlotpH)
 ```
 
